@@ -1,0 +1,151 @@
+ 
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+   --white: #fafafb;
+   --purple:#9a67ea;
+   --blue-light:#04d4c3;
+   --blue-dark:#2a73c2;
+   --green: #2c7b90;
+   --pink:#E5A8B6;
+   --pink1:#FF7DEA;
+
+
+}
+
+body {
+    background:var(--pink);
+    height: 100vh;   
+    font-family: 'Prompt', sans-serif;
+}
+
+.container {
+    max-width: 50%;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+   
+
+ 
+}
+.container img{
+    display: flex;
+    align-items: center;
+}
+
+/*PERFIL*/
+
+
+
+.user h1 {
+    color: var(--white);
+    
+    
+    
+}
+
+.user span {
+    color: var(--white);
+    letter-spacing: 1px;
+}
+
+
+
+
+
+
+/*add task*/
+
+.add-task {
+    background-color: var(--pink1) ;
+    border-radius: 15px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 70px;
+    padding: 10px;
+    margin: 40px 0;
+    width: fit-content;
+}
+
+.add-task input {
+    width: auto;
+    height: 100%;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--white);
+    padding-left: 10px;
+
+}
+.add-task input::placeholder {
+   font-size: 1rem;
+   color: var(--purple);
+}
+
+.add-task i{
+    font-size: 50px;
+    color: var(--purple);
+
+}
+.add-task i:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+
+
+/*section task */
+.section-task  {
+    display:flex;
+    justify-content: space-between;
+    
+}
+
+.icons{
+    display:flex;
+    align-items: center;
+}
+
+.icons i{
+    padding: 1rem;
+}
+
+.section-task li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom,var(--purple),var(--blue-light));
+    border-radius: 15px;
+    padding: 10px;
+    color: var(--white);
+    margin: 5px 0;
+    
+    
+
+}
+.section-task i {
+    font-size: 25px;
+    margin: 2%;
+}
+
+.section-task > ul p {
+    font-size: 1.2rem;
+    width: 25rem;
+
+}
+
+
+.section-task i:hover {
+    color: var(--blue-light);
+    cursor: pointer;
+    
+}
+
+.line-through{
+    text-decoration: line-through;
+    color : var(--blue-light);
+} 

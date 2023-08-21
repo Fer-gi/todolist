@@ -4,10 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>TO DO LIST APP</title>
 </head>
 <body>
+    <div class="container">
+        <div class="user">
+            <img src="/images/3d cats.png" alt="3 cats"/>
+            <div id="date"></div>
+            <h1>Welcome! </h1>
+            <span>We will do the task</span>
+        </div>
     
-    <script href="main.js"></script>
+        <div class="add-task">
+            <input type="text" id="title-input" placeholder="Task">
+            <input type="text" id="description-input" placeholder="Description">
+            <i id="add-button"class="fas fa-plus-circle"></i>
+        </div>
+    
+        
+        <div class="section-task">
+            <ul id="todo-list">
+            </ul>
+        </div>   
+    </div>
+    <script src="main.js"></script>
 </body>
 </html>
