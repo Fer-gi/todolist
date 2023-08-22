@@ -9,7 +9,7 @@ let id = 0;
 let tasks = [];
 const lineThrough = "line-through";
 const check = "fa-check-circle";
-
+const uncheck = "fa-circle";
 // Defino los listeners
 addButton.addEventListener("click", () => {
   // Manejo el click del boton agregar
@@ -87,19 +87,70 @@ todoListElement.addEventListener("click", function (event) {
     completeTask(element, element.id);
   } else if (elementData === "delete") {
     deleteTask(element, element.id);
+  } else if (elementData === "edit") {
+    let task = tasks[element.id];
+    editTask(element, element.id, task.title, task.description);
+  } else if (elementData === "save") {
+    let newTitle = document.querySelector("#edit-title-input").value;
+    let newDescription = document.querySelector(
+      "#edit-description-input"
+    ).value;
+    //modifico los valores en la tarea
+    let task = tasks[element.id];
+    task.title =newTitle
+    task.description = newDescription
+
+   
+    // reemplaza la tarea editada
+    replaceTask (element,newTitle,newDescription)
+   // elimina el formulario de editar
+   removeForm (element)
   }
 });
+
+function removeForm (element){
+    element.parentNode.parentNode.removeChild(
+        element.parentNode
+      );
+
+}
+//funcion para cambiar el titulo
+function replaceTask(element,newTitle,newDescription){
+    let textElement = element.parentNode.parentNode.parentNode.querySelector (".text")
+    textElement.innerText= `${newTitle} - ${newDescription}`
+    
+}
+
 
 // tarea  completada
 function completeTask(element, taskId) {
   element.parentNode.querySelector(".text").classList.toggle(lineThrough);
   element.classList.toggle(check);
-  tasks[taskId].status = 1;
+  element.classList.toggle(uncheck);
+  if (tasks[taskId].status === 0) {
+    tasks[taskId].status = 1;
+  } else {
+    tasks[taskId].status = 0;
+  }
+
   console.log(tasks);
 }
 
 //eliminar tarea
 function deleteTask(element, taskId) {
-  element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
+  element.parentNode.parentNode.parentNode.removeChild(
+    element.parentNode.parentNode
+  );
   tasks.splice(taskId, 1);
+}
+
+// editar tarea
+function editTask(element, taskId, title, description) {
+  let editTaskElement = `<div>
+                <input type="text" id="edit-title-input" placeholder="Title" value="${title}"></input>
+                <input type="text" id="edit-description-input" placeholder="Description" value="${description}"></input>
+                <i id="${taskId}" data= "save" class="fas fa-thumbs-up"></i>
+            </div> 
+    `;
+  element.parentNode.insertAdjacentHTML("beforeend", editTaskElement);
 }
