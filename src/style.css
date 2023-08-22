@@ -35,6 +35,7 @@ body {
 .container img{
     display: flex;
     align-items: center;
+    padding: 20%;
 }
 
 /*PERFIL*/
@@ -148,4 +149,11 @@ body {
 .line-through{
     text-decoration: line-through;
     color : var(--blue-light);
+} 
+
+/*edit task*/
+.edit-task input{
+   border-radius:  10px;
+   width: auto;
+   height: 5vh;
 } 
