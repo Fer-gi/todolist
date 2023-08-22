@@ -1,3 +1,6 @@
+// Importo la funcion del servidor
+import { getTasks } from "../api/api.js";
+
 // Defino los elementos del HTML (DOM)
 const addButton = document.querySelector("#add-button");
 const titleInput = document.querySelector("#title-input");
@@ -10,6 +13,10 @@ let tasks = [];
 const lineThrough = "line-through";
 const check = "fa-check-circle";
 const uncheck = "fa-circle";
+
+// Llamar a la funcion de cargar JSON
+loadTasksFromJson(await getTasks())
+
 // Defino los listeners
 addButton.addEventListener("click", () => {
   // Manejo el click del boton agregar
@@ -159,4 +166,12 @@ function editTask(element, taskId, title, description) {
     
         
   element.parentNode.insertAdjacentHTML("beforeend", editTaskElement);
+}
+
+
+// Funcion para cargar las tareas desde el JSON
+function loadTasksFromJson(tasksJSON){
+    for (let task of tasksJSON){
+        addTodoTask(task.title, task.description)
+    }
 }
