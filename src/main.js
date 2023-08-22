@@ -32,7 +32,7 @@ document.addEventListener("keyup", function (event) {
 // Crear tarea: Los usuarios PODRÁN agregar nuevas tareas a la lista, proporcionando un título y una descripción
 function addTodoTask(title, description) {
   if (title === "") {
-    alert("Complete the title");
+    alert("Please, complete the title");
     return;
   }
   // Crear el objeto tarea
@@ -92,6 +92,10 @@ todoListElement.addEventListener("click", function (event) {
     editTask(element, element.id, task.title, task.description);
   } else if (elementData === "save") {
     let newTitle = document.querySelector("#edit-title-input").value;
+    if (newTitle === "") {
+        alert("Please  complete with a new title");
+        return;
+      }
     let newDescription = document.querySelector(
       "#edit-description-input"
     ).value;
@@ -146,11 +150,13 @@ function deleteTask(element, taskId) {
 
 // editar tarea
 function editTask(element, taskId, title, description) {
-  let editTaskElement = `<div>
+  let editTaskElement = `<div class= "edit-task">
                 <input type="text" id="edit-title-input" placeholder="Title" value="${title}"></input>
                 <input type="text" id="edit-description-input" placeholder="Description" value="${description}"></input>
                 <i id="${taskId}" data= "save" class="fas fa-thumbs-up"></i>
             </div> 
     `;
+    
+        
   element.parentNode.insertAdjacentHTML("beforeend", editTaskElement);
 }
