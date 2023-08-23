@@ -1,55 +1,28 @@
 {
-"tasks":
-[
+  "tasks": [
     {
-        "title": "Complete report",
-        "description": "Finish the monthly sales report",
-        "id": 0
+      "title": "Grocery shopping",
+      "description": "Do the weekly grocery shopping at the supermarket",
+      "id": 2,
+      "status": 1
     },
     {
-        "title": "Exercise",
-        "description": "Complete a 30-minute workout session",
-        "id": 1
+      "title": "Prepare presentation",
+      "description": "Create slides for the upcoming team meeting",
+      "id": 4,
+      "status": 1
     },
     {
-        "title": "Grocery shopping",
-        "description": "Do the weekly grocery shopping at the supermarket",
-        "id": 2
+      "id": 6,
+      "title": "crear Figma",
+      "description": "con diseño web",
+      "status": 0
     },
     {
-        "title": "Call client",
-        "description": "Follow up with the client regarding their request",
-        "id": 3
-    },
-    {
-        "title": "Prepare presentation",
-        "description": "Create slides for the upcoming team meeting",
-        "id": 4
-    },
-    {
-        "title": "Read a chapter",
-        "description": "Read one chapter of the book 'The Power of Habit'",
-        "id": 5
-    },
-    {
-        "title": "Write email",
-        "description": "Compose and send an email to the marketing team",
-        "id": 6
-    },
-    {
-        "title": "Pay bills",
-        "description": "Pay utility bills for the month",
-        "id": 7
-    },
-    {
-        "title": "Organize workspace",
-        "description": "Clean and organize the office workspace",
-        "id": 8
-    },
-    {
-        "title": "Research new software",
-        "description": "Look for and evaluate project management software options",
-        "id": 9
+      "id": 792,
+      "title": "Bug fix",
+      "description": "Arreglar los bugs",
+      "status": 1
     }
-]
+  ]
 }
