@@ -1,5 +1,9 @@
 // Importo la funcion del servidor
-import { getTasks } from "../api/api.js";
+import { getTasksApi } from "../api/api.js";
+import { saveTaskApi } from "../api/api.js";
+import { deleteTaskApi } from "../api/api.js";
+import { updateTaskApi } from "../api/api.js";
+import { getTaskApi } from "../api/api.js";
 
 // Defino los elementos del HTML (DOM)
 const addButton = document.querySelector("#add-button");
@@ -8,14 +12,12 @@ const descriptionInput = document.querySelector("#description-input");
 const todoListElement = document.querySelector("#todo-list");
 
 // Defino las varibles globales
-let id = 0;
-let tasks = [];
 const lineThrough = "line-through";
 const check = "fa-check-circle";
 const uncheck = "fa-circle";
 
 // Llamar a la funcion de cargar JSON
-loadTasksFromJson(await getTasks())
+loadTasksFromJson(await getTasksApi());
 
 // Defino los listeners
 addButton.addEventListener("click", () => {
@@ -43,9 +45,10 @@ function addTodoTask(title, description) {
     return;
   }
   // Crear el objeto tarea
-  let task = createObject(title, description, 0);
-  // Guardo el objeto en la lista
-  tasks.push(task);
+  let task = createObject(getRandomInt(), title, description, 0);
+
+  //guardo la tarea en APi
+  saveTaskApi(task);
   // Mostrar el elemento en pantalla
   showTask(task, todoListElement);
   // limpiar los inputs
@@ -53,32 +56,38 @@ function addTodoTask(title, description) {
 }
 
 function showTask(task, listElement) {
+    const doneClass = task.status === 0 ? uncheck : check
+    const lineClass = task.status === 0 ? '' : lineThrough
   //let itemElement = `<li data="realizado" id="${id}">${task.title} - ${task.description}</li>`
   let itemElement = `
         <li id="item">
-            <i class="far fa-circle" data="done" id="${task.id}"></i>
-            <p class="text ">${task.title} - ${task.description}</p>
+            <i class="far ${doneClass}" data="done" id="${task.id}"></i>
+            <p class="text ${lineClass}">${task.title} - ${task.description}</p>
             <div class="icons">
                 <i class="fa fa-pen" data="edit" id="${task.id}"></i> 
                 <i class="fas fa-trash de" data="delete" id="${task.id}"></i> 
             </div>
         </li>
     `;
+
   listElement.insertAdjacentHTML("beforeend", itemElement);
 }
 
 // Status 0 = TODO, 1 = DONE
-function createObject(title, description, status) {
+function createObject(id, title, description, status) {
   let taskObject = {
     id: id,
     title: title,
     description: description,
     status: status,
   };
-  // Incremento el ID
-  id++;
   // Devuelvo el objeto
   return taskObject;
+}
+
+// random para el ID
+function getRandomInt() {
+  return Math.floor(Math.random() * 1000);
 }
 
 function cleanInputs() {
@@ -95,83 +104,87 @@ todoListElement.addEventListener("click", function (event) {
   } else if (elementData === "delete") {
     deleteTask(element, element.id);
   } else if (elementData === "edit") {
-    let task = tasks[element.id];
-    editTask(element, element.id, task.title, task.description);
+    editTask(element, element.id);
   } else if (elementData === "save") {
-    let newTitle = document.querySelector("#edit-title-input").value;
-    if (newTitle === "") {
-        alert("Please  complete with a new title");
-        return;
-      }
-    let newDescription = document.querySelector(
-      "#edit-description-input"
-    ).value;
-    //modifico los valores en la tarea
-    let task = tasks[element.id];
-    task.title =newTitle
-    task.description = newDescription
-
-   
-    // reemplaza la tarea editada
-    replaceTask (element,newTitle,newDescription)
-   // elimina el formulario de editar
-   removeForm (element)
+    saveEditTask(element, element.id);
   }
 });
 
-function removeForm (element){
-    element.parentNode.parentNode.removeChild(
-        element.parentNode
-      );
+async function saveEditTask(element, taskId) {
+  let newTitle = document.querySelector("#edit-title-input").value;
+  if (newTitle === "") {
+    alert("Please  complete with a new title");
+    return;
+  }
+  let newDescription = document.querySelector("#edit-description-input").value;
+  //modifico los valores en la tarea
+  let task = await getTaskApi(taskId);
+  task.title = newTitle;
+  task.description = newDescription;
 
+  //guardo tarea modificada en APi
+  updateTaskApi(task);
+  // reemplaza la tarea editada
+  replaceTask(element, newTitle, newDescription);
+  // elimina el formulario de editar
+  removeForm(element);
+}
+
+function removeForm(element) {
+  element.parentNode.parentNode.removeChild(element.parentNode);
 }
 //funcion para cambiar el titulo
-function replaceTask(element,newTitle,newDescription){
-    let textElement = element.parentNode.parentNode.parentNode.querySelector (".text")
-    textElement.innerText= `${newTitle} - ${newDescription}`
-    
+function replaceTask(element, newTitle, newDescription) {
+  let textElement =
+    element.parentNode.parentNode.parentNode.querySelector(".text");
+  textElement.innerText = `${newTitle} - ${newDescription}`;
 }
 
-
 // tarea  completada
-function completeTask(element, taskId) {
+async function completeTask(element, taskId) {
+  let task = await getTaskApi(element.id);
+
   element.parentNode.querySelector(".text").classList.toggle(lineThrough);
   element.classList.toggle(check);
   element.classList.toggle(uncheck);
-  if (tasks[taskId].status === 0) {
-    tasks[taskId].status = 1;
+  if (task.status === 0) {
+    task.status = 1;
   } else {
-    tasks[taskId].status = 0;
+    task.status = 0;
   }
-
-  console.log(tasks);
+  updateTaskApi(task);
 }
 
 //eliminar tarea
 function deleteTask(element, taskId) {
+  deleteTaskApi(taskId);
   element.parentNode.parentNode.parentNode.removeChild(
     element.parentNode.parentNode
   );
-  tasks.splice(taskId, 1);
 }
 
 // editar tarea
-function editTask(element, taskId, title, description) {
+async function editTask(element, taskId) {
+  let task = await getTaskApi(element.id);
   let editTaskElement = `<div class= "edit-task">
-                <input type="text" id="edit-title-input" placeholder="Title" value="${title}"></input>
-                <input type="text" id="edit-description-input" placeholder="Description" value="${description}"></input>
+                <input type="text" id="edit-title-input" placeholder="Title" value="${task.title}"></input>
+                <input type="text" id="edit-description-input" placeholder="Description" value="${task.description}"></input>
                 <i id="${taskId}" data= "save" class="fas fa-thumbs-up"></i>
             </div> 
     `;
-    
-        
+
   element.parentNode.insertAdjacentHTML("beforeend", editTaskElement);
 }
 
-
 // Funcion para cargar las tareas desde el JSON
-function loadTasksFromJson(tasksJSON){
-    for (let task of tasksJSON){
-        addTodoTask(task.title, task.description)
-    }
+function loadTasksFromJson(tasksJSON) {
+  for (let taskJSON of tasksJSON) {
+    let task = createObject(
+      taskJSON.id,
+      taskJSON.title,
+      taskJSON.description,
+      taskJSON.status
+    );
+    showTask(task, todoListElement);
+  }
 }
