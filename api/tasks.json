@@ -1,21 +1,15 @@
 {
   "tasks": [
     {
-      "title": "Grocery shopping",
+      "title": "grocery shopping",
       "description": "Do the weekly grocery shopping at the supermarket",
       "id": 2,
-      "status": 1
+      "status": 0
     },
     {
       "title": "Prepare presentation",
       "description": "Create slides for the upcoming team meeting",
       "id": 4,
-      "status": 1
-    },
-    {
-      "id": 6,
-      "title": "crear Figma",
-      "description": "con diseño web",
       "status": 0
     },
     {
