@@ -1,28 +1,34 @@
 {
   "tasks": [
     {
-      "title": "Grocery shopping",
+      "title": "Groceryfg",
       "description": "Do the weekly grocery shopping at the supermarket",
       "id": 2,
       "status": 1
     },
     {
-      "title": "Prepare presentation",
-      "description": "Create slides for the upcoming team meeting",
-      "id": 4,
-      "status": 1
-    },
-    {
-      "id": 6,
-      "title": "crear Figma",
-      "description": "con diseño web",
-      "status": 0
-    },
-    {
       "id": 792,
       "title": "Bug fix",
       "description": "Arreglar los bugs",
+      "status": 0
+    },
+    {
+      "id": 720,
+      "title": "repasar css",
+      "description": "flex y grid",
       "status": 1
+    },
+    {
+      "id": 906,
+      "title": "dhjkdjcnzcx",
+      "description": "lalalaa",
+      "status": 1
+    },
+    {
+      "id": 593,
+      "title": "sdada",
+      "description": "gfhgdhd",
+      "status": 0
     }
   ]
 }

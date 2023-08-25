@@ -5,21 +5,30 @@ import { deleteTaskApi } from "../api/api.js";
 import { updateTaskApi } from "../api/api.js";
 import { getTaskApi } from "../api/api.js";
 
-// Defino los elementos del HTML (DOM)
+//------------------------------------------------------ Defino los elementos del HTML (DOM)--------------------------------------------------------
 const addButton = document.querySelector("#add-button");
 const titleInput = document.querySelector("#title-input");
 const descriptionInput = document.querySelector("#description-input");
 const todoListElement = document.querySelector("#todo-list");
+const filterButton = document.querySelector("#filter-button");
 
-// Defino las varibles globales
+// -----------------------------------------------------Defino las varibles globales----------------------------------------------------------------
 const lineThrough = "line-through";
 const check = "fa-check-circle";
 const uncheck = "fa-circle";
 
-// Llamar a la funcion de cargar JSON
-loadTasksFromJson(await getTasksApi());
+//----------------------------------------------------define fecha--------------------------
+const date = document.querySelector("#date");
+const today = new Date();
+date.innerHTML = today.toLocaleDateString("en-US", {
+  weekday: "long",
+  month: "short",
+  day: "numeric",
+});
 
-// Defino los listeners
+// -----------------------------------------------------Llamar a la funcion de cargar JSON (GET de todas las tareas)-----------------------------------------------------------
+loadTasksFromJson(await getTasksApi());
+// -----------------------------------------------------Defino los listeners--------------------------------------------------------------------------
 addButton.addEventListener("click", () => {
   // Manejo el click del boton agregar
   let title = titleInput.value;
@@ -28,7 +37,18 @@ addButton.addEventListener("click", () => {
   addTodoTask(title, description);
 });
 
-//agregar con enter
+filterButton.addEventListener("click", async () => {
+  //Limpio la lista actual
+  var first = todoListElement.firstElementChild;
+  while (first) {
+    first.remove();
+    first = todoListElement.firstElementChild;
+  }
+  // Llamo al API y ordeno la lista
+  orderTasksByStatus(await getTasksApi());
+});
+
+//agregar una tarea presionando enter
 document.addEventListener("keyup", function (event) {
   if (event.key == "Enter") {
     let title = titleInput.value;
@@ -37,31 +57,36 @@ document.addEventListener("keyup", function (event) {
     addTodoTask(title, description);
   }
 });
+//-------------------------------------------------------TAREAS------------------------------------------------------------------------------------
 
-// Crear tarea: Los usuarios PODRÁN agregar nuevas tareas a la lista, proporcionando un título y una descripción
+//------ Crear tarea: Los usuarios PODRÁN agregar nuevas tareas a la lista, proporcionando un título y una descripción
 function addTodoTask(title, description) {
   if (title === "") {
     alert("Please, complete the title");
     return;
   }
-  // Crear el objeto tarea
+
+  // -----llamar el objeto tarea y la guardo en task
   let task = createObject(getRandomInt(), title, description, 0);
 
-  //guardo la tarea en APi
+  //------guardo la tarea en APi
   saveTaskApi(task);
-  // Mostrar el elemento en pantalla
+
+  //-----Mostrar la tarea en pantalla
   showTask(task, todoListElement);
-  // limpiar los inputs
+
+  //----- llamada para limpiar los inputs para poder cargar otra task (borra el contenido)
   cleanInputs();
 }
 
+//----- funcion que crea el elemento html de la tarea (li)
 function showTask(task, listElement) {
-    const doneClass = task.status === 0 ? uncheck : check
-    const lineClass = task.status === 0 ? '' : lineThrough
+  const doneClass = task.status === 0 ? uncheck : check;
+  const lineClass = task.status === 0 ? "" : lineThrough;
   //let itemElement = `<li data="realizado" id="${id}">${task.title} - ${task.description}</li>`
   let itemElement = `
         <li id="item">
-            <i class="far ${doneClass}" data="done" id="${task.id}"></i>
+            <i class="far ${doneClass}" data="done" id="${task.id}"></i>  
             <p class="text ${lineClass}">${task.title} - ${task.description}</p>
             <div class="icons">
                 <i class="fa fa-pen" data="edit" id="${task.id}"></i> 
@@ -73,7 +98,7 @@ function showTask(task, listElement) {
   listElement.insertAdjacentHTML("beforeend", itemElement);
 }
 
-// Status 0 = TODO, 1 = DONE
+//------------ Crea el objeto tarea y define su Status 0 = TODO, 1 = DONE
 function createObject(id, title, description, status) {
   let taskObject = {
     id: id,
@@ -81,7 +106,7 @@ function createObject(id, title, description, status) {
     description: description,
     status: status,
   };
-  // Devuelvo el objeto
+  //------------- Devuelvo el objeto
   return taskObject;
 }
 
@@ -89,17 +114,17 @@ function createObject(id, title, description, status) {
 function getRandomInt() {
   return Math.floor(Math.random() * 1000);
 }
-
+//--------------------funcion pata limpiar los imputs
 function cleanInputs() {
   titleInput.value = "";
   descriptionInput.value = "";
 }
 
-// Manejo del click en los elementos de la lista
+// Manejo del click en los elementos de la lista (para saber que elemento (icono/boton) es llamado)
 todoListElement.addEventListener("click", function (event) {
-  const element = event.target;
-  const elementData = element.attributes.data.value;
-  if (elementData === "done") {
+  const element = event.target; //para saber que icono clickeo
+  const elementData = element.attributes.data.value; // es el valor data del icono
+  if (elementData === "done") {  
     completeTask(element, element.id);
   } else if (elementData === "delete") {
     deleteTask(element, element.id);
@@ -110,13 +135,15 @@ todoListElement.addEventListener("click", function (event) {
   }
 });
 
+//------------------guarda una tarea editada en el Json------------------
 async function saveEditTask(element, taskId) {
   let newTitle = document.querySelector("#edit-title-input").value;
   if (newTitle === "") {
     alert("Please  complete with a new title");
     return;
   }
-  let newDescription = document.querySelector("#edit-description-input").value;
+  let newDescription = document.querySelector("#edit-description-input").value; //camnia el texto de la tarea original por la nueva
+
   //modifico los valores en la tarea
   let task = await getTaskApi(taskId);
   task.title = newTitle;
@@ -133,14 +160,14 @@ async function saveEditTask(element, taskId) {
 function removeForm(element) {
   element.parentNode.parentNode.removeChild(element.parentNode);
 }
-//funcion para cambiar el titulo
+//--------------------------------funcion para cambiar el titulo
 function replaceTask(element, newTitle, newDescription) {
   let textElement =
     element.parentNode.parentNode.parentNode.querySelector(".text");
   textElement.innerText = `${newTitle} - ${newDescription}`;
 }
 
-// tarea  completada
+// -------------------------tarea  completada (al dar check)
 async function completeTask(element, taskId) {
   let task = await getTaskApi(element.id);
 
@@ -155,15 +182,16 @@ async function completeTask(element, taskId) {
   updateTaskApi(task);
 }
 
-//eliminar tarea
+//-------------------------------eliminar tarea (hace el delete en api y html)
 function deleteTask(element, taskId) {
-  deleteTaskApi(taskId);
+  deleteTaskApi(taskId); //api
   element.parentNode.parentNode.parentNode.removeChild(
+    //HTML
     element.parentNode.parentNode
   );
 }
 
-// editar tarea
+// -------------------------------editar tarea (Abre el formulario para editar tarea)
 async function editTask(element, taskId) {
   let task = await getTaskApi(element.id);
   let editTaskElement = `<div class= "edit-task">
@@ -173,10 +201,10 @@ async function editTask(element, taskId) {
             </div> 
     `;
 
-  element.parentNode.insertAdjacentHTML("beforeend", editTaskElement);
+  element.parentNode.insertAdjacentHTML("beforeend", editTaskElement); // transforma en html y lo inserta en el elemento indicado
 }
 
-// Funcion para cargar las tareas desde el JSON
+// ------------------------Funcion para cargar las tareas desde el JSON
 function loadTasksFromJson(tasksJSON) {
   for (let taskJSON of tasksJSON) {
     let task = createObject(
@@ -186,5 +214,38 @@ function loadTasksFromJson(tasksJSON) {
       taskJSON.status
     );
     showTask(task, todoListElement);
+  }
+}
+
+// Coloco las tareas del JSON de manera ordenada, 1ro por TODO y 2do por DONE
+function orderTasksByStatus(tasksJSON) {
+  //Separo las tareas en dos arrays correpondientes
+  //Para TODO
+  let todoTasks = [];
+  //Para DONE
+  let doneTasks = [];
+
+  for (let taskJSON of tasksJSON) {  //recorro el json de tarea y creo objetos
+    let task = createObject(
+      taskJSON.id,
+      taskJSON.title,
+      taskJSON.description,
+      taskJSON.status
+    );
+    // Separo en los arrays segun su status
+    if (task.status === 0) {
+      todoTasks.push(task);
+    } else {
+      doneTasks.push(task);
+    }
+  }
+  // Recorro cada array y muestro las tareas en pantalla
+  //1ro las TODO
+  for (let todoTask of todoTasks) {
+    showTask(todoTask, todoListElement);
+  }
+  // 2do las DONE
+  for (let doneTask of doneTasks) {
+    showTask(doneTask, todoListElement);
   }
 }
