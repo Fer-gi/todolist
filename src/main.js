@@ -10,20 +10,24 @@ const addButton = document.querySelector("#add-button");
 const titleInput = document.querySelector("#title-input");
 const descriptionInput = document.querySelector("#description-input");
 const todoListElement = document.querySelector("#todo-list");
-
+const filterButton = document.querySelector("#filter-button");
 
 // -----------------------------------------------------Defino las varibles globales----------------------------------------------------------------
 const lineThrough = "line-through";
 const check = "fa-check-circle";
 const uncheck = "fa-circle";
 
-const date = document.querySelector('#date')
+//----------------------------------------------------define fecha--------------------------
+const date = document.querySelector("#date");
 const today = new Date();
-date.innerHTML = today.toLocaleDateString('en-US',{weekday: 'long', month: 'short', day:'numeric'})
+date.innerHTML = today.toLocaleDateString("en-US", {
+  weekday: "long",
+  month: "short",
+  day: "numeric",
+});
 
 // -----------------------------------------------------Llamar a la funcion de cargar JSON (GET de todas las tareas)-----------------------------------------------------------
 loadTasksFromJson(await getTasksApi());
-
 // -----------------------------------------------------Defino los listeners--------------------------------------------------------------------------
 addButton.addEventListener("click", () => {
   // Manejo el click del boton agregar
@@ -31,6 +35,17 @@ addButton.addEventListener("click", () => {
   let description = descriptionInput.value;
 
   addTodoTask(title, description);
+});
+
+filterButton.addEventListener("click", async () => {
+  //Limpio la lista actual
+  var first = todoListElement.firstElementChild;
+  while (first) {
+    first.remove();
+    first = todoListElement.firstElementChild;
+  }
+  // Llamo al API y ordeno la lista
+  orderTasksByStatus(await getTasksApi());
 });
 
 //agregar una tarea presionando enter
@@ -57,12 +72,12 @@ function addTodoTask(title, description) {
   //------guardo la tarea en APi
   saveTaskApi(task);
 
-  //-----Mostrar el elemento en pantalla
+  //-----Mostrar la tarea en pantalla
   showTask(task, todoListElement);
-  //----- llamada para limpiar los inputs para poder cargar otra task
+
+  //----- llamada para limpiar los inputs para poder cargar otra task (borra el contenido)
   cleanInputs();
 }
-
 
 //----- funcion que crea el elemento html de la tarea (li)
 function showTask(task, listElement) {
@@ -71,7 +86,7 @@ function showTask(task, listElement) {
   //let itemElement = `<li data="realizado" id="${id}">${task.title} - ${task.description}</li>`
   let itemElement = `
         <li id="item">
-            <i class="far ${doneClass}" data="done" id="${task.id}"></i>
+            <i class="far ${doneClass}" data="done" id="${task.id}"></i>  
             <p class="text ${lineClass}">${task.title} - ${task.description}</p>
             <div class="icons">
                 <i class="fa fa-pen" data="edit" id="${task.id}"></i> 
@@ -107,9 +122,9 @@ function cleanInputs() {
 
 // Manejo del click en los elementos de la lista (para saber que elemento (icono/boton) es llamado)
 todoListElement.addEventListener("click", function (event) {
-  const element = event.target;
-  const elementData = element.attributes.data.value;
-  if (elementData === "done") {
+  const element = event.target; //para saber que icono clickeo
+  const elementData = element.attributes.data.value; // es el valor data del icono
+  if (elementData === "done") {  
     completeTask(element, element.id);
   } else if (elementData === "delete") {
     deleteTask(element, element.id);
@@ -120,7 +135,6 @@ todoListElement.addEventListener("click", function (event) {
   }
 });
 
-
 //------------------guarda una tarea editada en el Json------------------
 async function saveEditTask(element, taskId) {
   let newTitle = document.querySelector("#edit-title-input").value;
@@ -128,7 +142,7 @@ async function saveEditTask(element, taskId) {
     alert("Please  complete with a new title");
     return;
   }
-  let newDescription = document.querySelector("#edit-description-input").value;  //camnia el texto de la tarea original por la nueva
+  let newDescription = document.querySelector("#edit-description-input").value; //camnia el texto de la tarea original por la nueva
 
   //modifico los valores en la tarea
   let task = await getTaskApi(taskId);
@@ -170,8 +184,9 @@ async function completeTask(element, taskId) {
 
 //-------------------------------eliminar tarea (hace el delete en api y html)
 function deleteTask(element, taskId) {
-  deleteTaskApi(taskId);            //api
-  element.parentNode.parentNode.parentNode.removeChild(             //HTML
+  deleteTaskApi(taskId); //api
+  element.parentNode.parentNode.parentNode.removeChild(
+    //HTML
     element.parentNode.parentNode
   );
 }
@@ -186,7 +201,7 @@ async function editTask(element, taskId) {
             </div> 
     `;
 
-  element.parentNode.insertAdjacentHTML("beforeend", editTaskElement);   // transforma en html y lo inserta en el elemento indicado
+  element.parentNode.insertAdjacentHTML("beforeend", editTaskElement); // transforma en html y lo inserta en el elemento indicado
 }
 
 // ------------------------Funcion para cargar las tareas desde el JSON
@@ -202,3 +217,35 @@ function loadTasksFromJson(tasksJSON) {
   }
 }
 
+// Coloco las tareas del JSON de manera ordenada, 1ro por TODO y 2do por DONE
+function orderTasksByStatus(tasksJSON) {
+  //Separo las tareas en dos arrays correpondientes
+  //Para TODO
+  let todoTasks = [];
+  //Para DONE
+  let doneTasks = [];
+
+  for (let taskJSON of tasksJSON) {  //recorro el json de tarea y creo objetos
+    let task = createObject(
+      taskJSON.id,
+      taskJSON.title,
+      taskJSON.description,
+      taskJSON.status
+    );
+    // Separo en los arrays segun su status
+    if (task.status === 0) {
+      todoTasks.push(task);
+    } else {
+      doneTasks.push(task);
+    }
+  }
+  // Recorro cada array y muestro las tareas en pantalla
+  //1ro las TODO
+  for (let todoTask of todoTasks) {
+    showTask(todoTask, todoListElement);
+  }
+  // 2do las DONE
+  for (let doneTask of doneTasks) {
+    showTask(doneTask, todoListElement);
+  }
+}

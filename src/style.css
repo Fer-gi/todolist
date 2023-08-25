@@ -1,10 +1,4 @@
 
-* {
-    /*box-sizing: border-box;*/
-    padding: 0;
-    margin: 0;
-}
-
 :root {
    --white: #fafafb;
    --purple:#9a67ea;
@@ -19,69 +13,77 @@
 
 body {
     background:var(--pink);
-    height: 100vh;   
+    height: 100%;   
+    width: 100%;
     font-family: 'Prompt', sans-serif;
 }
 
 .container {
-    max-width: 50%;
-    width: auto;
+    
+    width: 100%;
     height: auto;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
 }
+
 
 .container img{
     display: flex;
     align-items: center;
-    padding: 2% 10% 10% 10%;
+    padding: 2%;
 }
 
-/*PERFIL*/
 
-
-
-.user h1 {
+.container h1 {
     color: var(--blue-dark);
 
 }
 
-.user span {
+.container span {
     color: var(--green);
     font-size: 20px;
     letter-spacing: 1px;
 }
 
+ul{
+    margin:0;
+    padding: 0;
+}
 /*add task*/
 
 .add-task {
     background-color: var(--pink1) ;
     border-radius: 15px;
-    height: 4.5rem;
+    height: 100%;
     display: flex;
     align-items: center;
-    gap: 4.5rem;
+    justify-content: space-around;
+    gap:2%;
     padding: 1rem;
-    margin: 2.5rem 0;
-    width: fit-content;
+    margin: 2.5rem ;
+    width: 40%;
 }
 
 .add-task input {
-    width: auto;
+    width: 100%;
     height: 100%;
     border-radius: 8px;
     border: none;
     background-color: var(--white);
-    padding-left: 0.6rem;
+    padding: 1.5%;
 
 }
 .add-task input::placeholder {
     font-size: 1rem;
     color: var(--purple);
+
 }
 
 .add-task i{
-    font-size: 40px;
+    font-size: 3rem;
     color: var(--purple);
 
 }
@@ -95,7 +97,8 @@ body {
 /*section task */
 .section-task  {
     display:flex;
-    justify-content: space-between;
+    justify-content: center;
+    width: 100%;
     
 }
 
@@ -105,30 +108,29 @@ body {
 }
 
 .icons i{
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 .section-task li {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content:space-between;
     background: linear-gradient(to bottom,var(--purple),var(--blue-light));
     border-radius: 15px;
-    padding: 1rem;
     color: var(--white);
-    margin: 0.2rem 0;
+    margin:1%;
     
     
 
 }
 .section-task i {
     font-size: 1.2rem;
-    margin: 2%;
+    margin: 0.5rem;
 }
 
-.section-task > ul p {
+.section-task  ul p {
     font-size: 1.2rem;
-    width: 25rem;
+    width: auto;
 
 }
 
@@ -148,137 +150,48 @@ body {
 .edit-task input{
     border-radius:  10px;
     width: auto;
-    height: 5vh;
+    height: 1.8rem;
 } 
 /*--------------------------------------------------mediaquery---------------------------------*/
 
 
-@media only screen and (max-width : 900px) {
-    .container {
-        max-width: 30%;
-        width: auto;
-        height: auto;
-        margin: 0 auto;
-    
-    }
-    
-    .container img{
-        display: flex;
-        align-items: center;
-        padding: 10%;
-    }
-    
-    /*PERFIL*/
-    
-    
-    
-    .user h1 {
-        color: var(--white);
-    
-    }
-    
-    .user span {
-        color: var(--white);
-        letter-spacing: 1px;
-    }
-    
-    /*add task*/
+@media  screen and (max-width : 800px) {
     
     .add-task {
         background-color: var(--pink1) ;
         border-radius: 15px;
-        height: 3rem;
+        height: 100%;
         display: flex;
         align-items: center;
-        gap: 4.5rem;
+        flex-direction: column;
         padding: 1rem;
-        margin: 2.5rem 0;
-        width: fit-content;
+        margin: 2.5rem ;
+        width: 60%;
     }
+      
     
     .add-task input {
-        width: auto;
-        height: 100%;
+        width: 100%;
+        height: 2rem;
         border-radius: 8px;
         border: none;
         background-color: var(--white);
-        padding-left: 0.6rem;
-    
-    }
-    .add-task input::placeholder {
-        font-size: 1rem;
-        color: var(--purple);
-    }
-    
-    .add-task i{
-        font-size: 25px;
-        color: var(--purple);
-    
-    }
-    .add-task i:hover {
-        transform: scale(1.1);
-        cursor: pointer;
-    }
-    
-    
-    
-    /*section task */
-    .section-task  {
-        display:flex;
-        justify-content: space-between;
-        
-    }
-    
-    .icons{
-        display:flex;
-        align-items: center;
-    }
-    
-    .icons i{
         padding: 1rem;
-    }
-    
-    .section-task li {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: linear-gradient(to bottom,var(--purple),var(--blue-light));
-        border-radius: 15px;
-        padding: 1rem;
-        color: var(--white);
-        margin: 0.2rem 0;
+        margin: 1rem;
         
         
-    
     }
-    .section-task i {
-        font-size: 1.2rem;
-        margin: 2%;
-    }
-    
-    .section-task > ul p {
-        font-size: 1.2rem;
-        width: 25rem;
-    
-    }
-    
-    
-    .section-task i:hover {
-        color: var(--blue-light);
-        cursor: pointer;
+    .container{
+        
+        align-items: start;
         
     }
     
-    .line-through{
-        text-decoration: line-through;
-        color : var(--blue-light);
-    } 
-    
-    /*edit task*/
-    .edit-task input{
-        border-radius:  10px;
-        width: auto;
-        height: 5vh;
-    } 
-    
+.container img{
+    display: flex;
+    align-items: center;
+    padding: 1%;
+    margin: 1%;
+}
+
 }
