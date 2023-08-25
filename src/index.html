@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon.ico"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>TO DO LIST APP</title>
+  </head>
+  <body>
+    <div class="container">
+      <img src="/images/3d cats.png" alt="3 cats" />
+      <div id="date"></div>
+      <h1>Welcome to <b>CatList!</b></h1>
+      <span>Let's do the task!</span>
+
+      <div class="add-task">
+        <input type="text" id="title-input" placeholder="Task" />
+        <input type="text" id="description-input" placeholder="Description" />
+        <i id="add-button" class="fas fa-plus-circle"></i>
+        <i id="filter-button" class="fas fa-sort"></i>      
+    </div>
+
+      <div class="section-task">
+        <ul id="todo-list"></ul>
+      </div>
+    </div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

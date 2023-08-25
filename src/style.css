@@ -1,0 +1,197 @@
+
+:root {
+   --white: #fafafb;
+   --purple:#9a67ea;
+   --blue-light:#04d4c3;
+   --blue-dark:#2a73c2;
+   --green: #2c7b90;
+   --pink:#E5A8B6;
+   --pink1:#FF7DEA;
+
+
+}
+
+body {
+    background:var(--pink);
+    height: 100%;   
+    width: 100%;
+    font-family: 'Prompt', sans-serif;
+}
+
+.container {
+    
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+
+.container img{
+    display: flex;
+    align-items: center;
+    padding: 2%;
+}
+
+
+.container h1 {
+    color: var(--blue-dark);
+
+}
+
+.container span {
+    color: var(--green);
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+ul{
+    margin:0;
+    padding: 0;
+}
+/*add task*/
+
+.add-task {
+    background-color: var(--pink1) ;
+    border-radius: 15px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap:2%;
+    padding: 1rem;
+    margin: 2.5rem ;
+    width: 40%;
+}
+
+.add-task input {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--white);
+    padding: 1.5%;
+
+}
+.add-task input::placeholder {
+    font-size: 1rem;
+    color: var(--purple);
+
+}
+
+.add-task i{
+    font-size: 3rem;
+    color: var(--purple);
+
+}
+.add-task i:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+
+
+/*section task */
+.section-task  {
+    display:flex;
+    justify-content: center;
+    width: 100%;
+    
+}
+
+.icons{
+    display:flex;
+    align-items: center;
+}
+
+.icons i{
+    padding: 0.5rem;
+}
+
+.section-task li {
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    background: linear-gradient(to bottom,var(--purple),var(--blue-light));
+    border-radius: 15px;
+    color: var(--white);
+    margin:1%;
+    
+    
+
+}
+.section-task i {
+    font-size: 1.2rem;
+    margin: 0.5rem;
+}
+
+.section-task  ul p {
+    font-size: 1.2rem;
+    width: auto;
+
+}
+
+
+.section-task i:hover {
+    color: var(--blue-light);
+    cursor: pointer;
+    
+}
+
+.line-through{
+    text-decoration: line-through;
+    color : var(--blue-light);
+} 
+
+/*edit task*/
+.edit-task input{
+    border-radius:  10px;
+    width: auto;
+    height: 1.8rem;
+} 
+/*--------------------------------------------------mediaquery---------------------------------*/
+
+
+@media  screen and (max-width : 800px) {
+    
+    .add-task {
+        background-color: var(--pink1) ;
+        border-radius: 15px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 1rem;
+        margin: 2.5rem ;
+        width: 60%;
+    }
+      
+    
+    .add-task input {
+        width: 100%;
+        height: 2rem;
+        border-radius: 8px;
+        border: none;
+        background-color: var(--white);
+        padding: 1rem;
+        margin: 1rem;
+        
+        
+    }
+    .container{
+        
+        align-items: start;
+        
+    }
+    
+.container img{
+    display: flex;
+    align-items: center;
+    padding: 1%;
+    margin: 1%;
+}
+
+}
